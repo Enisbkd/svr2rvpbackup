@@ -1,0 +1,30 @@
+{
+  "sevenRoomsToReviewProApplicationApp": {
+    "rvpProfile": {
+      "home": {
+        "title": "Rvp Profiles",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Rvp Profile",
+        "createOrEditLabel": "Create or edit a Rvp Profile",
+        "notFound": "No Rvp Profiles found"
+      },
+      "created": "A new Rvp Profile is created with identifier { param }",
+      "updated": "A Rvp Profile is updated with identifier { param }",
+      "deleted": "A Rvp Profile is deleted with identifier { param }",
+      "delete": {
+        "question": "Are you sure you want to delete Rvp Profile { id }?"
+      },
+      "detail": {
+        "title": "Rvp Profile"
+      },
+      "id": "ID",
+      "pmsId": "Pms Id",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "language": "Language",
+      "checkin": "Checkin",
+      "checkout": "Checkout",
+      "email": "Email"
+    }
+  }
+}
