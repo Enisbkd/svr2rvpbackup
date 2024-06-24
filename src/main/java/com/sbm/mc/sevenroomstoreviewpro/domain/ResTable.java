@@ -2,9 +2,10 @@ package com.sbm.mc.sevenroomstoreviewpro.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
 
 /**
  * A ResTable.
@@ -29,6 +30,15 @@ public class ResTable implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "resTags", "resPosTickets", "resCustomFields", "resTables" }, allowSetters = true)
     private Reservation reservation;
+
+    public ResTable(String tableNumber, Reservation reservation) {
+        this.tableNumber = tableNumber;
+        this.reservation = reservation;
+    }
+
+    public ResTable() {
+
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

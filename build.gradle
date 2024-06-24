@@ -164,7 +164,8 @@ dependencies {
     testImplementation "org.testcontainers:jdbc"
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:testcontainers"
-    // jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+    implementation 'org.springframework.kafka:spring-kafka:3.1.1'
+    implementation 'org.apache.kafka:kafka-streams:3.6.1'
 }
 
 task cleanResources(type: Delete) {

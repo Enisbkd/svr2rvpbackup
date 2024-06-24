@@ -1,8 +1,18 @@
 package com.sbm.mc.sevenroomstoreviewpro.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
+import com.sbm.mc.sevenroomstoreviewpro.service.impl.AbstractAuditingEntitySBM;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,10 +20,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A ClientPhoto.
  */
 @Entity
-@Table(name = "client_photo")
+@Table(name = "svr_api_client_photo")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ClientPhoto implements Serializable {
+public class ClientPhoto extends AbstractAuditingEntitySBM<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,53 +34,90 @@ public class ClientPhoto implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "large")
+    @Column(name = "large", length = 1000)
     private String large;
 
     @Column(name = "large_height")
+    @JsonProperty("large_height")
     private Integer largeHeight;
 
     @Column(name = "large_width")
+    @JsonProperty("large_width")
     private Integer largeWidth;
 
-    @Column(name = "medium")
+    @Column(name = "medium", length = 1000)
     private String medium;
 
-    @Column(name = "medium_height")
+    @Column(name = "medium_height", length = 1000)
+    @JsonProperty("medium_height")
     private Integer mediumHeight;
 
     @Column(name = "medium_width")
+    @JsonProperty("medium_width")
     private Integer mediumWidth;
 
-    @Column(name = "small")
+    @Column(name = "small", length = 1000)
     private String small;
 
     @Column(name = "small_height")
+    @JsonProperty("small_height")
     private Integer smallHeight;
 
     @Column(name = "small_width")
+    @JsonProperty("small_width")
     private Integer smallWidth;
 
-    @Column(name = "jhi_raw")
+    @Column(name = "photo_raw", length = 1000)
+    @JsonProperty("raw")
     private String raw;
 
+    @Column(name = "raw_width")
+    @JsonProperty("raw_width")
+    private Integer rawWidth;
+
+    @Column(name = "raw_height")
+    @JsonProperty("raw_height")
+    private Integer rawHeight;
+
     @Column(name = "cropx")
-    private Integer cropx;
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private Double cropx;
 
     @Column(name = "cropy")
-    private Integer cropy;
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    private Double cropy;
 
     @Column(name = "crop_height")
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
     private Double cropHeight;
 
     @Column(name = "crop_width")
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
     private Double cropWidth;
 
     @JsonIgnoreProperties(value = { "clientPhoto", "clientVenueStats", "customFields", "clientTags", "memberGroups" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "clientPhoto")
     private Client client;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public Integer getRawWidth() {
+        return rawWidth;
+    }
+
+    public void setRawWidth(Integer rawWidth) {
+        this.rawWidth = rawWidth;
+    }
+
+    public Integer getRawHeight() {
+        return rawHeight;
+    }
+
+    public void setRawHeight(Integer rawHeight) {
+        this.rawHeight = rawHeight;
+    }
 
     public Long getId() {
         return this.id;
@@ -214,29 +262,29 @@ public class ClientPhoto implements Serializable {
         this.raw = raw;
     }
 
-    public Integer getCropx() {
+    public Double getCropx() {
         return this.cropx;
     }
 
-    public ClientPhoto cropx(Integer cropx) {
+    public ClientPhoto cropx(Double cropx) {
         this.setCropx(cropx);
         return this;
     }
 
-    public void setCropx(Integer cropx) {
+    public void setCropx(Double cropx) {
         this.cropx = cropx;
     }
 
-    public Integer getCropy() {
+    public Double getCropy() {
         return this.cropy;
     }
 
-    public ClientPhoto cropy(Integer cropy) {
+    public ClientPhoto cropy(Double cropy) {
         this.setCropy(cropy);
         return this;
     }
 
-    public void setCropy(Integer cropy) {
+    public void setCropy(Double cropy) {
         this.cropy = cropy;
     }
 
@@ -285,8 +333,6 @@ public class ClientPhoto implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -300,7 +346,8 @@ public class ClientPhoto implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 

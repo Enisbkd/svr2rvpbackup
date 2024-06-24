@@ -2,9 +2,10 @@ package com.sbm.mc.sevenroomstoreviewpro.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.io.Serializable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
 
 /**
  * A BookingName.
@@ -29,6 +30,10 @@ public class BookingName implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "bookingNames", "client" }, allowSetters = true)
     private ClientVenueStats clientVenueStats;
+
+    public BookingName(String name) {
+        this.name = name;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
