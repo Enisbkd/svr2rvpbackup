@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity BookingName.
+    -->
+    <changeSet id="20240624133557-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="client_venue_stats_id"
+                                 baseTableName="booking_name"
+                                 constraintName="fk_booking_name__client_venue_stats_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="client_venue_stats"
+                                 />
+    </changeSet>
+</databaseChangeLog>

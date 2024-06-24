@@ -50,6 +50,30 @@ public class CacheConfiguration {
             createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.User.class.getName());
             createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Authority.class.getName());
             createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.RvpProfile.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Client.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Client.class.getName() + ".customFields");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Client.class.getName() + ".clientTags");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Client.class.getName() + ".memberGroups");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.MemberGroup.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ClientTag.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.CustomField.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ClientVenueStats.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ClientVenueStats.class.getName() + ".bookingNames");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.BookingName.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ClientPhoto.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Reservation.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Reservation.class.getName() + ".resTags");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Reservation.class.getName() + ".resPosTickets");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Reservation.class.getName() + ".resCustomFields");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Reservation.class.getName() + ".resTables");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResCustomField.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResPosTicket.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResPosTicket.class.getName() + ".resPosticketsItems");
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResPosticketsItem.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResTag.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.ResTable.class.getName());
+            createCache(cm, com.sbm.mc.sevenroomstoreviewpro.domain.Venue.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

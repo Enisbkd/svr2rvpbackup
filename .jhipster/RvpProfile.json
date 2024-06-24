@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20240624133551"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "pmsId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "language",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "checkin",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "checkout",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String"
+    }
+  ],
+  "name": "RvpProfile",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}
