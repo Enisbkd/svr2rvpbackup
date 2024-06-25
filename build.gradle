@@ -164,8 +164,8 @@ dependencies {
     testImplementation "org.testcontainers:jdbc"
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:testcontainers"
-    implementation 'org.springframework.kafka:spring-kafka:3.1.1'
-    implementation 'org.apache.kafka:kafka-streams:3.6.1'
+    implementation 'org.springframework.kafka:spring-kafka:3.2.1'
+    implementation 'org.apache.kafka:kafka-streams:3.7.0'
 }
 
 task cleanResources(type: Delete) {

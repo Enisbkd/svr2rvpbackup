@@ -1,12 +1,11 @@
 package com.sbm.mc.sevenroomstoreviewpro.serdes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sbm.sevenroomstohub.domain.Venue;
+import com.sbm.mc.sevenroomstoreviewpro.domain.Venue;
+import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 public class VenueDeserializer implements Deserializer<Venue> {
 

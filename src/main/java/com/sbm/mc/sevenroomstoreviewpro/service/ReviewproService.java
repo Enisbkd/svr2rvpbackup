@@ -1,4 +1,7 @@
 package com.sbm.mc.sevenroomstoreviewpro.service;
 
-public interface ReviewproService{
+import com.sbm.mc.sevenroomstoreviewpro.domain.RvpProfile;
+
+public interface ReviewproService {
+    String postGuestToReviewpro(RvpProfile profile);
 }

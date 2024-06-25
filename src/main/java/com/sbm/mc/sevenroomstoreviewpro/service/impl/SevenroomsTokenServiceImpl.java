@@ -14,9 +14,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class SevenroomsSevenroomsTokenServiceImpl implements SevenroomsTokenService {
+public class SevenroomsTokenServiceImpl implements SevenroomsTokenService {
 
-    private final Logger log = LoggerFactory.getLogger(SevenroomsSevenroomsTokenServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(SevenroomsTokenServiceImpl.class);
 
     @Value(value = "${sevenroomsApi.graviteeUrl}")
     private String graviteeUrl;
@@ -50,15 +50,14 @@ public class SevenroomsSevenroomsTokenServiceImpl implements SevenroomsTokenServ
 
         try {
             ResponseEntity<String> response = restTemplate.exchange(authUrl, HttpMethod.POST, entity, String.class);
-
+            log.debug("AuthUrl : " + authUrl);
+            log.debug("Response : " + response.getBody());
             if (response.getStatusCode().is2xxSuccessful()) {
                 log.debug("Token : " + extractTokenFromJson(response.getBody()));
                 return extractTokenFromJson(response.getBody());
             } else return "";
         } catch (Exception e) {
-            log.error(
-                "Could not generate Token , This may be caused by bad credentials (clientId And clientSecret) Token will be Empty..."
-            );
+            log.error(e.getMessage() + " Could not generate Token");
             return "";
         }
     }
@@ -70,13 +69,16 @@ public class SevenroomsSevenroomsTokenServiceImpl implements SevenroomsTokenServ
             JsonNode rootNode = objectMapper.readTree(json);
 
             // Extract token from JSON
-            JsonNode tokenNode = rootNode.path("data").path("token");
-            String token = tokenNode.asText();
-            log.info("Extracted Token successfully.");
-            return token;
+            if (!json.contains("Error")) {
+                JsonNode tokenNode = rootNode.path("data").path("token");
+                String token = tokenNode.asText();
+                log.info("Extracted Token successfully.");
+                return token;
+            }
         } catch (Exception e) {
             log.error("Error occurred while extracting token from JSON", e);
             return null;
         }
+        return "";
     }
 }

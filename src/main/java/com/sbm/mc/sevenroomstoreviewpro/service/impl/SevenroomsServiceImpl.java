@@ -1,5 +1,10 @@
 package com.sbm.mc.sevenroomstoreviewpro.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sbm.mc.sevenroomstoreviewpro.domain.Client;
+import com.sbm.mc.sevenroomstoreviewpro.service.SevenroomsService;
 import com.sbm.mc.sevenroomstoreviewpro.service.SevenroomsTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class SevenroomsServiceImpl {
+public class SevenroomsServiceImpl implements SevenroomsService {
 
     private static final Logger log = LoggerFactory.getLogger(SevenroomsServiceImpl.class);
 
@@ -31,19 +34,10 @@ public class SevenroomsServiceImpl {
     @Value(value = "${sevenroomsApi.api-key}")
     private String graviteeApiKey;
 
-    @Value(value = "${sevenroomsApi.venueGroupId}")
-    private String venueGroupId;
-
-    @GetMapping(path = "/exportClients", produces = "application/json")
-    public String getClientFromSevenRoomsApi(
-        @RequestParam(required = true) String client_id,
-        @RequestParam(required = false) String authToken
-    ) {
+    public String getClientFromSevenRoomsApi(String client_id) {
         String url = graviteeUrl + "clients";
-        if (authToken == null) {
-            authToken = sevenroomsTokenService.generateToken();
-        }
 
+        String authToken = sevenroomsTokenService.generateToken();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-7rooms-Authorization", authToken);
@@ -61,13 +55,27 @@ public class SevenroomsServiceImpl {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 log.info("Received response with status code: {}", response.getStatusCode().value());
-                System.out.println("hi");
                 return response.getBody();
             } else {
                 return "Error: " + response.getStatusCode().value();
             }
         } else {
             return "Error: Token empty , Request won't be sent.";
+        }
+    }
+
+    public Client extractClientFields(String clientPayload) {
+        ObjectMapper mapper = new ObjectMapper();
+        Client client = new Client();
+        try {
+            JsonNode clientNode = mapper.readTree(clientPayload);
+            String email = clientNode.path("data").path("email").asText();
+            String language = clientNode.path("data").path("preferred_language_code").asText();
+            client.setEmail(email);
+            client.setPreferredLanguageCode(language);
+            return client;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 }

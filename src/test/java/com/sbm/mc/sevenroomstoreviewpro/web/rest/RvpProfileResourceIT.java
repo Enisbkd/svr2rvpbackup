@@ -13,10 +13,7 @@ import com.sbm.mc.sevenroomstoreviewpro.IntegrationTest;
 import com.sbm.mc.sevenroomstoreviewpro.domain.RvpProfile;
 import com.sbm.mc.sevenroomstoreviewpro.repository.RvpProfileRepository;
 import jakarta.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -234,8 +231,8 @@ class RvpProfileResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .language(UPDATED_LANGUAGE)
-            .checkin(UPDATED_CHECKIN)
-            .checkout(UPDATED_CHECKOUT)
+            .checkin(UPDATED_CHECKIN.toLocalDateTime())
+            .checkout(LocalDate.from(UPDATED_CHECKOUT))
             .email(UPDATED_EMAIL);
 
         restRvpProfileMockMvc
@@ -314,7 +311,11 @@ class RvpProfileResourceIT {
         RvpProfile partialUpdatedRvpProfile = new RvpProfile();
         partialUpdatedRvpProfile.setId(rvpProfile.getId());
 
-        partialUpdatedRvpProfile.firstName(UPDATED_FIRST_NAME).lastName(UPDATED_LAST_NAME).checkin(UPDATED_CHECKIN).email(UPDATED_EMAIL);
+        partialUpdatedRvpProfile
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
+            .checkin(UPDATED_CHECKIN.toLocalDateTime())
+            .email(UPDATED_EMAIL);
 
         restRvpProfileMockMvc
             .perform(

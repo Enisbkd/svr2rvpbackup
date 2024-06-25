@@ -1,9 +1,17 @@
 package com.sbm.mc.sevenroomstoreviewpro.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sbm.mc.sevenroomstoreviewpro.service.impl.AbstractAuditingEntitySBM;
+import com.sbm.mc.sevenroomstoreviewpro.utils.TimestampUtils;
 import jakarta.persistence.*;
-import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -12,10 +20,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Reservation.
  */
 @Entity
-@Table(name = "reservation")
+@Table(name = "svr_api_resv")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Reservation implements Serializable {
+public class Reservation extends AbstractAuditingEntitySBM<Long> {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,99 +32,132 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
-    @Column(name = "resv_id")
+    @Column(name = "resv_id_name", unique = true)
+    @JsonProperty("id")
     private String resvId;
 
     @Column(name = "created")
-    private String created;
+    @JsonProperty("created")
+    private ZonedDateTime created;
 
     @Column(name = "updated")
-    private String updated;
+    @JsonProperty("updated")
+    private ZonedDateTime updated;
 
     @Column(name = "deleted")
-    private String deleted;
+    @JsonProperty("deleted")
+    private ZonedDateTime deleted;
+
+    @JsonProperty("client_id")
+    @Column(name = "client_id")
+    private String clientId;
 
     @Column(name = "venue_group_client_id")
+    @JsonProperty("venue_group_client_id")
     private String venueGroupClientId;
 
     @Column(name = "venue_group_id")
+    @JsonProperty("venue_group_id")
     private String venueGroupId;
 
     @Column(name = "venue_id")
+    @JsonProperty("venue_id")
     private String venueId;
 
-    @Column(name = "jhi_date")
-    private String date;
+    @JsonProperty("real_datetime_of_slot")
+    private LocalDateTime realDateTimeOfSlot;
+
+    @Column(name = "resv_date")
+    private LocalDate date;
 
     @Column(name = "duration")
     private Integer duration;
 
     @Column(name = "check_numbers")
+    @JsonProperty("check_numbers")
     private String checkNumbers;
 
     @Column(name = "shift_category")
+    @JsonProperty("shift_category")
     private String shiftCategory;
 
     @Column(name = "shift_persistent_id")
+    @JsonProperty("shift_persistent_id")
     private String shiftPersistentId;
 
     @Column(name = "max_guests")
+    @JsonProperty("max_guests")
     private Integer maxGuests;
 
     @Column(name = "mfratio_male")
+    @JsonProperty("mf_ratio_male")
     private Integer mfratioMale;
 
     @Column(name = "mfratio_female")
+    @JsonProperty("mf_ratio_female")
     private Integer mfratioFemale;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "status_display")
+    @JsonProperty("status_display")
     private String statusDisplay;
 
     @Column(name = "status_simple")
+    @JsonProperty("status_simple")
     private String statusSimple;
 
     @Column(name = "access_persistent_id")
+    @JsonProperty("access_persistent_id")
     private String accessPersistentId;
 
     @Column(name = "arrived_guests")
+    @JsonProperty("arrived_guests")
     private Integer arrivedGuests;
 
     @Column(name = "isvip")
+    @JsonProperty("is_vip")
     private Boolean isvip;
 
     @Column(name = "bookedby")
+    @JsonProperty("booked_by")
     private String bookedby;
 
     @Column(name = "client_reference_code")
+    @JsonProperty("client_reference_code")
     private String clientReferenceCode;
 
     @Column(name = "lastname")
+    @JsonProperty("last_name")
     private String lastname;
 
     @Column(name = "firstname")
+    @JsonProperty("first_name")
     private String firstname;
 
     @Column(name = "email")
     private String email;
 
     @Column(name = "phone_number")
+    @JsonProperty("phone_number")
     private String phoneNumber;
 
     @Column(name = "address")
     private String address;
 
     @Column(name = "address_2")
+    @JsonProperty("address_2")
     private String address2;
 
     @Column(name = "city")
     private String city;
 
     @Column(name = "postal_code")
+    @JsonProperty("postal_code")
     private String postalCode;
 
     @Column(name = "state")
@@ -125,57 +167,72 @@ public class Reservation implements Serializable {
     private String country;
 
     @Column(name = "loyalty_id")
+    @JsonProperty("loyalty_id")
     private String loyaltyId;
 
     @Column(name = "loyalty_rank")
+    @JsonProperty("loyalty_rank")
     private Integer loyaltyRank;
 
     @Column(name = "loyalty_tier")
+    @JsonProperty("loyalty_tier")
     private String loyaltyTier;
 
     @Column(name = "notes")
     private String notes;
 
     @Column(name = "arrival_time")
+    @JsonProperty("arrival_time")
     private String arrivalTime;
 
     @Column(name = "seated_time")
+    @JsonProperty("seated_time")
     private String seatedTime;
 
     @Column(name = "left_time")
+    @JsonProperty("left_time")
     private String leftTime;
 
     @Column(name = "client_requests")
+    @JsonProperty("client_requests")
     private String clientRequests;
 
     @Column(name = "comps")
     private Integer comps;
 
     @Column(name = "comps_price_type")
+    @JsonProperty("comps_price_type")
     private String compsPriceType;
 
     @Column(name = "cost_option")
+    @JsonProperty("cost_option")
     private Integer costOption;
 
     @Column(name = "policy")
     private String policy;
 
     @Column(name = "min_price")
+    @JsonProperty("min_price")
     private Integer minPrice;
 
     @Column(name = "pre_payment")
+    @JsonProperty("prepayment")
     private Double prePayment;
 
     @Column(name = "onsite_payment")
+    @JsonProperty("onsite_payment")
     private Double onsitePayment;
 
     @Column(name = "total_payment")
+    @JsonProperty("total_payment")
     private Integer totalPayment;
 
     @Column(name = "paid_by")
+    @JsonProperty("paid_by")
     private String paidBy;
 
     @Column(name = "served_by")
+    @JsonProperty("served_by")
     private String servedBy;
 
     @Column(name = "rating")
@@ -185,39 +242,51 @@ public class Reservation implements Serializable {
     private String problems;
 
     @Column(name = "auto_assignments")
+    @JsonProperty("auto_assignments")
     private String autoAssignments;
 
     @Column(name = "external_client_id")
+    @JsonProperty("external_client_id")
     private String externalClientId;
 
     @Column(name = "external_id")
+    @JsonProperty("external_id")
     private String externalId;
 
     @Column(name = "external_reference_code")
+    @JsonProperty("external_reference_code")
     private String externalReferenceCode;
 
     @Column(name = "external_user_id")
+    @JsonProperty("external_user_id")
     private String externalUserId;
 
-    @Column(name = "modify_reservation_link")
+    @Column(name = "modify_reservation_link", length = 500)
+    @JsonProperty("modify_reservation_link")
     private String modifyReservationLink;
 
     @Column(name = "reference_code")
+    @JsonProperty("reference_code")
     private String referenceCode;
 
     @Column(name = "reservation_sms_optin")
+    @JsonProperty("reservation_sms_opt_in")
     private Boolean reservationSmsOptin;
 
     @Column(name = "reservation_type")
+    @JsonProperty("reservation_type")
     private String reservationType;
 
     @Column(name = "send_reminder_email")
+    @JsonProperty("send_reminder_email")
     private Boolean sendReminderEmail;
 
     @Column(name = "sendreminder_sms")
+    @JsonProperty("send_reminder_sms")
     private Boolean sendreminderSms;
 
     @Column(name = "source_client_id")
+    @JsonProperty("source_client_id")
     private String sourceClientId;
 
     @Column(name = "user_id")
@@ -226,27 +295,38 @@ public class Reservation implements Serializable {
     @Column(name = "user_name")
     private String userName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "reservation" }, allowSetters = true)
+    @JsonProperty("tags")
     private Set<ResTag> resTags = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "resPosticketsItems", "reservation" }, allowSetters = true)
+    @JsonProperty("pos_tickets")
     private Set<ResPosTicket> resPosTickets = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "reservation" }, allowSetters = true)
+    @JsonProperty("custom_fields")
     private Set<ResCustomField> resCustomFields = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reservation")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "reservation" }, allowSetters = true)
     private Set<ResTable> resTables = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    public LocalDateTime getRealDateTimeOfSlot() {
+        return realDateTimeOfSlot;
+    }
+
+    public void setRealDateTimeOfSlot(String realDateTimeOfSlot) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(realDateTimeOfSlot, dateTimeFormatter);
+        this.realDateTimeOfSlot = localDateTime;
+    }
+
+    public void setRealDateTimeOfSlot(LocalDateTime realDateTimeOfSlot) {
+        this.realDateTimeOfSlot = realDateTimeOfSlot;
+    }
 
     public Long getId() {
         return this.id;
@@ -274,43 +354,55 @@ public class Reservation implements Serializable {
         this.resvId = resvId;
     }
 
-    public String getCreated() {
+    public ZonedDateTime getCreated() {
         return this.created;
     }
 
-    public Reservation created(String created) {
+    public Reservation created(ZonedDateTime created) {
         this.setCreated(created);
         return this;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
-    public String getUpdated() {
+    public void setCreated(String created) {
+        this.created = TimestampUtils.convertToZonedDateTime(created);
+    }
+
+    public ZonedDateTime getUpdated() {
         return this.updated;
     }
 
-    public Reservation updated(String updated) {
+    public Reservation updated(ZonedDateTime updated) {
         this.setUpdated(updated);
         return this;
     }
 
-    public void setUpdated(String updated) {
+    public void setUpdated(ZonedDateTime updated) {
         this.updated = updated;
     }
 
-    public String getDeleted() {
+    public void setUpdated(String updated) {
+        this.updated = TimestampUtils.convertToZonedDateTime(updated);
+    }
+
+    public ZonedDateTime getDeleted() {
         return this.deleted;
     }
 
-    public Reservation deleted(String deleted) {
+    public Reservation deleted(ZonedDateTime deleted) {
         this.setDeleted(deleted);
         return this;
     }
 
-    public void setDeleted(String deleted) {
+    public void setDeleted(ZonedDateTime deleted) {
         this.deleted = deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = TimestampUtils.convertToZonedDateTime(deleted);
     }
 
     public String getVenueGroupClientId() {
@@ -352,7 +444,7 @@ public class Reservation implements Serializable {
         this.venueId = venueId;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
@@ -362,6 +454,10 @@ public class Reservation implements Serializable {
     }
 
     public void setDate(String date) {
+        this.date = TimestampUtils.convertToLocalDate(date);
+    }
+
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -1184,13 +1280,11 @@ public class Reservation implements Serializable {
 
     public Reservation addResPosTicket(ResPosTicket resPosTicket) {
         this.resPosTickets.add(resPosTicket);
-        resPosTicket.setReservation(this);
         return this;
     }
 
     public Reservation removeResPosTicket(ResPosTicket resPosTicket) {
         this.resPosTickets.remove(resPosTicket);
-        resPosTicket.setReservation(null);
         return this;
     }
 
@@ -1256,97 +1350,374 @@ public class Reservation implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Reservation)) {
-            return false;
-        }
-        return getId() != null && getId().equals(((Reservation) o).getId());
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return (
+            Objects.equals(id, that.id) &&
+            Objects.equals(resvId, that.resvId) &&
+            Objects.equals(created, that.created) &&
+            Objects.equals(updated, that.updated) &&
+            Objects.equals(deleted, that.deleted) &&
+            Objects.equals(clientId, that.clientId) &&
+            Objects.equals(venueGroupClientId, that.venueGroupClientId) &&
+            Objects.equals(venueGroupId, that.venueGroupId) &&
+            Objects.equals(venueId, that.venueId) &&
+            Objects.equals(date, that.date) &&
+            Objects.equals(duration, that.duration) &&
+            Objects.equals(checkNumbers, that.checkNumbers) &&
+            Objects.equals(shiftCategory, that.shiftCategory) &&
+            Objects.equals(shiftPersistentId, that.shiftPersistentId) &&
+            Objects.equals(maxGuests, that.maxGuests) &&
+            Objects.equals(mfratioMale, that.mfratioMale) &&
+            Objects.equals(mfratioFemale, that.mfratioFemale) &&
+            Objects.equals(status, that.status) &&
+            Objects.equals(statusDisplay, that.statusDisplay) &&
+            Objects.equals(statusSimple, that.statusSimple) &&
+            Objects.equals(accessPersistentId, that.accessPersistentId) &&
+            Objects.equals(arrivedGuests, that.arrivedGuests) &&
+            Objects.equals(isvip, that.isvip) &&
+            Objects.equals(bookedby, that.bookedby) &&
+            Objects.equals(clientReferenceCode, that.clientReferenceCode) &&
+            Objects.equals(lastname, that.lastname) &&
+            Objects.equals(firstname, that.firstname) &&
+            Objects.equals(email, that.email) &&
+            Objects.equals(phoneNumber, that.phoneNumber) &&
+            Objects.equals(address, that.address) &&
+            Objects.equals(address2, that.address2) &&
+            Objects.equals(city, that.city) &&
+            Objects.equals(postalCode, that.postalCode) &&
+            Objects.equals(state, that.state) &&
+            Objects.equals(country, that.country) &&
+            Objects.equals(loyaltyId, that.loyaltyId) &&
+            Objects.equals(loyaltyRank, that.loyaltyRank) &&
+            Objects.equals(loyaltyTier, that.loyaltyTier) &&
+            Objects.equals(notes, that.notes) &&
+            Objects.equals(arrivalTime, that.arrivalTime) &&
+            Objects.equals(seatedTime, that.seatedTime) &&
+            Objects.equals(leftTime, that.leftTime) &&
+            Objects.equals(clientRequests, that.clientRequests) &&
+            Objects.equals(comps, that.comps) &&
+            Objects.equals(compsPriceType, that.compsPriceType) &&
+            Objects.equals(costOption, that.costOption) &&
+            Objects.equals(policy, that.policy) &&
+            Objects.equals(minPrice, that.minPrice) &&
+            Objects.equals(prePayment, that.prePayment) &&
+            Objects.equals(onsitePayment, that.onsitePayment) &&
+            Objects.equals(totalPayment, that.totalPayment) &&
+            Objects.equals(paidBy, that.paidBy) &&
+            Objects.equals(servedBy, that.servedBy) &&
+            Objects.equals(rating, that.rating) &&
+            Objects.equals(problems, that.problems) &&
+            Objects.equals(autoAssignments, that.autoAssignments) &&
+            Objects.equals(externalClientId, that.externalClientId) &&
+            Objects.equals(externalId, that.externalId) &&
+            Objects.equals(externalReferenceCode, that.externalReferenceCode) &&
+            Objects.equals(externalUserId, that.externalUserId) &&
+            Objects.equals(modifyReservationLink, that.modifyReservationLink) &&
+            Objects.equals(referenceCode, that.referenceCode) &&
+            Objects.equals(reservationSmsOptin, that.reservationSmsOptin) &&
+            Objects.equals(reservationType, that.reservationType) &&
+            Objects.equals(sendReminderEmail, that.sendReminderEmail) &&
+            Objects.equals(sendreminderSms, that.sendreminderSms) &&
+            Objects.equals(sourceClientId, that.sourceClientId) &&
+            Objects.equals(userId, that.userId) &&
+            Objects.equals(resTags, that.resTags) &&
+            Objects.equals(resPosTickets, that.resPosTickets) &&
+            Objects.equals(resCustomFields, that.resCustomFields) &&
+            Objects.equals(resTables, that.resTables)
+        );
     }
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+        return Objects.hash(
+            id,
+            resvId,
+            created,
+            updated,
+            deleted,
+            clientId,
+            venueGroupClientId,
+            venueGroupId,
+            venueId,
+            date,
+            duration,
+            checkNumbers,
+            shiftCategory,
+            shiftPersistentId,
+            maxGuests,
+            mfratioMale,
+            mfratioFemale,
+            status,
+            statusDisplay,
+            statusSimple,
+            accessPersistentId,
+            arrivedGuests,
+            isvip,
+            bookedby,
+            clientReferenceCode,
+            lastname,
+            firstname,
+            email,
+            phoneNumber,
+            address,
+            address2,
+            city,
+            postalCode,
+            state,
+            country,
+            loyaltyId,
+            loyaltyRank,
+            loyaltyTier,
+            notes,
+            arrivalTime,
+            seatedTime,
+            leftTime,
+            clientRequests,
+            comps,
+            compsPriceType,
+            costOption,
+            policy,
+            minPrice,
+            prePayment,
+            onsitePayment,
+            totalPayment,
+            paidBy,
+            servedBy,
+            rating,
+            problems,
+            autoAssignments,
+            externalClientId,
+            externalId,
+            externalReferenceCode,
+            externalUserId,
+            modifyReservationLink,
+            referenceCode,
+            reservationSmsOptin,
+            reservationType,
+            sendReminderEmail,
+            sendreminderSms,
+            sourceClientId,
+            userId,
+            userName
+        );
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "Reservation{" +
-            "id=" + getId() +
-            ", resvId='" + getResvId() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", updated='" + getUpdated() + "'" +
-            ", deleted='" + getDeleted() + "'" +
-            ", venueGroupClientId='" + getVenueGroupClientId() + "'" +
-            ", venueGroupId='" + getVenueGroupId() + "'" +
-            ", venueId='" + getVenueId() + "'" +
-            ", date='" + getDate() + "'" +
-            ", duration=" + getDuration() +
-            ", checkNumbers='" + getCheckNumbers() + "'" +
-            ", shiftCategory='" + getShiftCategory() + "'" +
-            ", shiftPersistentId='" + getShiftPersistentId() + "'" +
-            ", maxGuests=" + getMaxGuests() +
-            ", mfratioMale=" + getMfratioMale() +
-            ", mfratioFemale=" + getMfratioFemale() +
-            ", status='" + getStatus() + "'" +
-            ", statusDisplay='" + getStatusDisplay() + "'" +
-            ", statusSimple='" + getStatusSimple() + "'" +
-            ", accessPersistentId='" + getAccessPersistentId() + "'" +
-            ", arrivedGuests=" + getArrivedGuests() +
-            ", isvip='" + getIsvip() + "'" +
-            ", bookedby='" + getBookedby() + "'" +
-            ", clientReferenceCode='" + getClientReferenceCode() + "'" +
-            ", lastname='" + getLastname() + "'" +
-            ", firstname='" + getFirstname() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", address='" + getAddress() + "'" +
-            ", address2='" + getAddress2() + "'" +
-            ", city='" + getCity() + "'" +
-            ", postalCode='" + getPostalCode() + "'" +
-            ", state='" + getState() + "'" +
-            ", country='" + getCountry() + "'" +
-            ", loyaltyId='" + getLoyaltyId() + "'" +
-            ", loyaltyRank=" + getLoyaltyRank() +
-            ", loyaltyTier='" + getLoyaltyTier() + "'" +
-            ", notes='" + getNotes() + "'" +
-            ", arrivalTime='" + getArrivalTime() + "'" +
-            ", seatedTime='" + getSeatedTime() + "'" +
-            ", leftTime='" + getLeftTime() + "'" +
-            ", clientRequests='" + getClientRequests() + "'" +
-            ", comps=" + getComps() +
-            ", compsPriceType='" + getCompsPriceType() + "'" +
-            ", costOption=" + getCostOption() +
-            ", policy='" + getPolicy() + "'" +
-            ", minPrice=" + getMinPrice() +
-            ", prePayment=" + getPrePayment() +
-            ", onsitePayment=" + getOnsitePayment() +
-            ", totalPayment=" + getTotalPayment() +
-            ", paidBy='" + getPaidBy() + "'" +
-            ", servedBy='" + getServedBy() + "'" +
-            ", rating=" + getRating() +
-            ", problems='" + getProblems() + "'" +
-            ", autoAssignments='" + getAutoAssignments() + "'" +
-            ", externalClientId='" + getExternalClientId() + "'" +
-            ", externalId='" + getExternalId() + "'" +
-            ", externalReferenceCode='" + getExternalReferenceCode() + "'" +
-            ", externalUserId='" + getExternalUserId() + "'" +
-            ", modifyReservationLink='" + getModifyReservationLink() + "'" +
-            ", referenceCode='" + getReferenceCode() + "'" +
-            ", reservationSmsOptin='" + getReservationSmsOptin() + "'" +
-            ", reservationType='" + getReservationType() + "'" +
-            ", sendReminderEmail='" + getSendReminderEmail() + "'" +
-            ", sendreminderSms='" + getSendreminderSms() + "'" +
-            ", sourceClientId='" + getSourceClientId() + "'" +
-            ", userId='" + getUserId() + "'" +
-            ", userName='" + getUserName() + "'" +
-            "}";
+        return (
+            "Reservation{" +
+            "id=" +
+            id +
+            ", resvId='" +
+            resvId +
+            '\'' +
+            ", created=" +
+            created +
+            ", updated=" +
+            updated +
+            ", deleted=" +
+            deleted +
+            ", clientId='" +
+            clientId +
+            '\'' +
+            ", venueGroupClientId='" +
+            venueGroupClientId +
+            '\'' +
+            ", venueGroupId='" +
+            venueGroupId +
+            '\'' +
+            ", venueId='" +
+            venueId +
+            '\'' +
+            ", realDateTimeOfSlot=" +
+            realDateTimeOfSlot +
+            ", date=" +
+            date +
+            ", duration=" +
+            duration +
+            ", checkNumbers='" +
+            checkNumbers +
+            '\'' +
+            ", shiftCategory='" +
+            shiftCategory +
+            '\'' +
+            ", shiftPersistentId='" +
+            shiftPersistentId +
+            '\'' +
+            ", maxGuests=" +
+            maxGuests +
+            ", mfratioMale=" +
+            mfratioMale +
+            ", mfratioFemale=" +
+            mfratioFemale +
+            ", status='" +
+            status +
+            '\'' +
+            ", statusDisplay='" +
+            statusDisplay +
+            '\'' +
+            ", statusSimple='" +
+            statusSimple +
+            '\'' +
+            ", accessPersistentId='" +
+            accessPersistentId +
+            '\'' +
+            ", arrivedGuests=" +
+            arrivedGuests +
+            ", isvip=" +
+            isvip +
+            ", bookedby='" +
+            bookedby +
+            '\'' +
+            ", clientReferenceCode='" +
+            clientReferenceCode +
+            '\'' +
+            ", lastname='" +
+            lastname +
+            '\'' +
+            ", firstname='" +
+            firstname +
+            '\'' +
+            ", email='" +
+            email +
+            '\'' +
+            ", phoneNumber='" +
+            phoneNumber +
+            '\'' +
+            ", address='" +
+            address +
+            '\'' +
+            ", address2='" +
+            address2 +
+            '\'' +
+            ", city='" +
+            city +
+            '\'' +
+            ", postalCode='" +
+            postalCode +
+            '\'' +
+            ", state='" +
+            state +
+            '\'' +
+            ", country='" +
+            country +
+            '\'' +
+            ", loyaltyId='" +
+            loyaltyId +
+            '\'' +
+            ", loyaltyRank=" +
+            loyaltyRank +
+            ", loyaltyTier='" +
+            loyaltyTier +
+            '\'' +
+            ", notes='" +
+            notes +
+            '\'' +
+            ", arrivalTime='" +
+            arrivalTime +
+            '\'' +
+            ", seatedTime='" +
+            seatedTime +
+            '\'' +
+            ", leftTime='" +
+            leftTime +
+            '\'' +
+            ", clientRequests='" +
+            clientRequests +
+            '\'' +
+            ", comps=" +
+            comps +
+            ", compsPriceType='" +
+            compsPriceType +
+            '\'' +
+            ", costOption=" +
+            costOption +
+            ", policy='" +
+            policy +
+            '\'' +
+            ", minPrice=" +
+            minPrice +
+            ", prePayment=" +
+            prePayment +
+            ", onsitePayment=" +
+            onsitePayment +
+            ", totalPayment=" +
+            totalPayment +
+            ", paidBy='" +
+            paidBy +
+            '\'' +
+            ", servedBy='" +
+            servedBy +
+            '\'' +
+            ", rating=" +
+            rating +
+            ", problems='" +
+            problems +
+            '\'' +
+            ", autoAssignments='" +
+            autoAssignments +
+            '\'' +
+            ", externalClientId='" +
+            externalClientId +
+            '\'' +
+            ", externalId='" +
+            externalId +
+            '\'' +
+            ", externalReferenceCode='" +
+            externalReferenceCode +
+            '\'' +
+            ", externalUserId='" +
+            externalUserId +
+            '\'' +
+            ", modifyReservationLink='" +
+            modifyReservationLink +
+            '\'' +
+            ", referenceCode='" +
+            referenceCode +
+            '\'' +
+            ", reservationSmsOptin=" +
+            reservationSmsOptin +
+            ", reservationType='" +
+            reservationType +
+            '\'' +
+            ", sendReminderEmail=" +
+            sendReminderEmail +
+            ", sendreminderSms=" +
+            sendreminderSms +
+            ", sourceClientId='" +
+            sourceClientId +
+            '\'' +
+            ", userId='" +
+            userId +
+            '\'' +
+            ", userName='" +
+            userName +
+            '\'' +
+            ", resTags=" +
+            resTags +
+            ", resPosTickets=" +
+            resPosTickets +
+            ", resCustomFields=" +
+            resCustomFields +
+            ", resTables=" +
+            resTables +
+            '}'
+        );
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 }

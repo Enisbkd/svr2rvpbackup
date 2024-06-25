@@ -18,18 +18,18 @@ package com.sbm.mc.sevenroomstoreviewpro.serdes;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sbm.mc.sevenroomstoreviewpro.domain.ResTable;
 import com.sbm.mc.sevenroomstoreviewpro.domain.Reservation;
 import com.sbm.mc.sevenroomstoreviewpro.exceptions.BadEntityTypeException;
 import com.sbm.mc.sevenroomstoreviewpro.exceptions.BadEventTypeException;
+import java.io.IOException;
+import java.util.*;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.streams.errors.StreamsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.*;
 
 public class ReservationDeserializer<ReservationPayload> implements Deserializer<ReservationPayload> {
 
@@ -38,7 +38,7 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
     Class<ReservationPayload> cls;
     private JacksonDeserializerConfig config;
 
-    List<String> eventTypes = Arrays.asList(new String[]{"created", "updated", "deleted"});
+    List<String> eventTypes = Arrays.asList(new String[] { "created", "updated", "deleted" });
 
     public ReservationDeserializer() {
         this.objectMapper = new ObjectMapper();
@@ -56,7 +56,7 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
     @Override
     public void configure(Map<String, ?> settings, boolean isKey) {
         this.config = new JacksonDeserializerConfig(settings);
-        this.config.configure(this.objectMapper);
+        this.config.configure(this.objectMapper.findAndRegisterModules());
         if (null != this.cls) {
             log.trace("cls is already configured to {}", this.cls.getName());
         } else {
@@ -70,6 +70,8 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
             return null;
         }
         try {
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.findAndRegisterModules();
             String entityType = String.valueOf(objectMapper.readTree(bytes).get("entity_type"));
             // Removing quotes because field is parsed with quotes.
             String eventType = String.valueOf(objectMapper.readTree(bytes).get("event_type")).replace("\"", "");
@@ -82,6 +84,7 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
                     Reservation reservation = reservationPayload.getReservation();
 
                     JsonNode resEntity = objectMapper.readTree(bytes).get("entity");
+                    reservation.setRealDateTimeOfSlot(resEntity.get("real_datetime_of_slot").toString().replace("\"", ""));
 
                     if (resEntity != null) {
                         userDeserializer(resEntity, reservation);
@@ -92,8 +95,7 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
                 } else throw new BadEventTypeException(
                     "Event type is not recognized , accepted values : " + eventTypes.toString() + " found :" + eventType
                 );
-            } else
-                throw new BadEntityTypeException("Entity type is not Reservation , expected : Reservation , found :" + entityType);
+            } else throw new BadEntityTypeException("Entity type is not Reservation , expected : Reservation , found :" + entityType);
         } catch (IOException | BadEntityTypeException | StreamsException | BadEventTypeException e) {
             throw new SerializationException(e);
         }
@@ -124,6 +126,5 @@ public class ReservationDeserializer<ReservationPayload> implements Deserializer
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

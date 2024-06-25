@@ -2,6 +2,8 @@ package com.sbm.mc.sevenroomstoreviewpro.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -36,13 +38,15 @@ public class RvpProfile implements Serializable {
     private String language;
 
     @Column(name = "checkin")
-    private ZonedDateTime checkin;
+    private LocalDateTime checkin;
 
     @Column(name = "checkout")
-    private ZonedDateTime checkout;
+    private LocalDate checkout;
 
     @Column(name = "email")
     private String email;
+
+    private String email2;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -111,29 +115,29 @@ public class RvpProfile implements Serializable {
         this.language = language;
     }
 
-    public ZonedDateTime getCheckin() {
+    public LocalDateTime getCheckin() {
         return this.checkin;
     }
 
-    public RvpProfile checkin(ZonedDateTime checkin) {
+    public RvpProfile checkin(LocalDateTime checkin) {
         this.setCheckin(checkin);
         return this;
     }
 
-    public void setCheckin(ZonedDateTime checkin) {
+    public void setCheckin(LocalDateTime checkin) {
         this.checkin = checkin;
     }
 
-    public ZonedDateTime getCheckout() {
+    public LocalDate getCheckout() {
         return this.checkout;
     }
 
-    public RvpProfile checkout(ZonedDateTime checkout) {
+    public RvpProfile checkout(LocalDate checkout) {
         this.setCheckout(checkout);
         return this;
     }
 
-    public void setCheckout(ZonedDateTime checkout) {
+    public void setCheckout(LocalDate checkout) {
         this.checkout = checkout;
     }
 
@@ -150,7 +154,13 @@ public class RvpProfile implements Serializable {
         this.email = email;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -165,22 +175,38 @@ public class RvpProfile implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "RvpProfile{" +
-            "id=" + getId() +
-            ", pmsId='" + getPmsId() + "'" +
-            ", firstName='" + getFirstName() + "'" +
-            ", lastName='" + getLastName() + "'" +
-            ", language='" + getLanguage() + "'" +
-            ", checkin='" + getCheckin() + "'" +
-            ", checkout='" + getCheckout() + "'" +
-            ", email='" + getEmail() + "'" +
-            "}";
+        return (
+            "RvpProfile{" +
+            "id=" +
+            id +
+            ", pmsId='" +
+            pmsId +
+            '\'' +
+            ", firstName='" +
+            firstName +
+            '\'' +
+            ", lastName='" +
+            lastName +
+            '\'' +
+            ", language='" +
+            language +
+            '\'' +
+            ", checkin=" +
+            checkin +
+            ", checkout=" +
+            checkout +
+            ", email='" +
+            email +
+            '\'' +
+            ", email2='" +
+            email2 +
+            '\'' +
+            '}'
+        );
     }
 }
