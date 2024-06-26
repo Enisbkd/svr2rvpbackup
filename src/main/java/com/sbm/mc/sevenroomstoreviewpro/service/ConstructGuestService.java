@@ -5,4 +5,6 @@ import com.sbm.mc.sevenroomstoreviewpro.domain.RvpProfile;
 
 public interface ConstructGuestService {
     RvpProfile constructGuest(ReservationPayload reservationPayload);
+
+    Boolean validateReservation(ReservationPayload reservationPayload);
 }

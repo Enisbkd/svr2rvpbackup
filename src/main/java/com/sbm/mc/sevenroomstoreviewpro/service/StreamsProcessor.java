@@ -45,8 +45,10 @@ public class StreamsProcessor {
     private void reservationsProcessor(ReservationPayload reservationPayload) {
         try {
             if (reservationPayload != null) {
-                RvpProfile rvpProfile = constructGuestService.constructGuest(reservationPayload);
-                reviewproService.postGuestToReviewpro(rvpProfile);
+                if (constructGuestService.validateReservation(reservationPayload)) {
+                    RvpProfile rvpProfile = constructGuestService.constructGuest(reservationPayload);
+                    reviewproService.postGuestToReviewpro(rvpProfile);
+                }
             } else {
                 logger.info("ReservationPayload Empty , Aborting ...");
             }

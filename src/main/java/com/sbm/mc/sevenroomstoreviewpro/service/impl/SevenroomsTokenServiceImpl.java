@@ -53,7 +53,6 @@ public class SevenroomsTokenServiceImpl implements SevenroomsTokenService {
             log.debug("AuthUrl : " + authUrl);
             log.debug("Response : " + response.getBody());
             if (response.getStatusCode().is2xxSuccessful()) {
-                log.debug("Token : " + extractTokenFromJson(response.getBody()));
                 return extractTokenFromJson(response.getBody());
             } else return "";
         } catch (Exception e) {

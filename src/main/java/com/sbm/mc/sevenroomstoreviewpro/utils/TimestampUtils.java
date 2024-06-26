@@ -44,7 +44,7 @@ public class TimestampUtils {
     }
 
     public static LocalDate convertToLocalDate(String text) {
-        logger.debug("Input string date : " + text);
+        //        logger.debug("Input string date : " + text);
         LocalDate localDate = null;
         String subStringDate = null;
         if (text != null) {
@@ -54,7 +54,7 @@ public class TimestampUtils {
         try {
             if (text != null) {
                 localDate = LocalDate.parse(subStringDate, formatter);
-                logger.debug("Output date : " + localDate);
+                //                logger.debug("Output date : " + localDate);
             }
         } catch (DateTimeParseException e) {
             logger.debug("Error parsing date: " + e.getMessage());

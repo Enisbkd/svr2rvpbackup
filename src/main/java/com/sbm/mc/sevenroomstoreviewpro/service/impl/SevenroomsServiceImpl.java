@@ -71,8 +71,10 @@ public class SevenroomsServiceImpl implements SevenroomsService {
             JsonNode clientNode = mapper.readTree(clientPayload);
             String email = clientNode.path("data").path("email").asText();
             String language = clientNode.path("data").path("preferred_language_code").asText();
+            String civilite = clientNode.path("data").path("salutation").asText();
             client.setEmail(email);
             client.setPreferredLanguageCode(language);
+            client.setSalutation(civilite);
             return client;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

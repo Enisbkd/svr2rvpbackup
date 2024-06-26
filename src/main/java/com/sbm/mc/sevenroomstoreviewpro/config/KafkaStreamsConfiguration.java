@@ -1,6 +1,12 @@
 package com.sbm.mc.sevenroomstoreviewpro.config;
 
+import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.*;
+
 import com.sbm.mc.sevenroomstoreviewpro.serdes.SendToDeadLetterQueueExceptionHandler;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.serialization.Serdes;
@@ -11,13 +17,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
-import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
-import static org.apache.kafka.streams.StreamsConfig.*;
 
 @Configuration
 @EnableKafka
@@ -41,6 +40,9 @@ public class KafkaStreamsConfiguration {
 
     @Value(value = "${spring.kafka.properties.ssl.sslTruststoreLocation}")
     private String trustStoreLocation;
+
+    @Value(value = "${spring.kafka.properties.auto.offset.reset.config}")
+    private String offsetReset;
 
     private String trustStorePassword = System.getProperty("javax.net.ssl.trustStorePassword");
 
@@ -73,9 +75,8 @@ public class KafkaStreamsConfiguration {
         props.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(DEFAULT_DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, SendToDeadLetterQueueExceptionHandler.class);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, offsetReset);
 
         return new org.springframework.kafka.config.KafkaStreamsConfiguration(props);
     }
-    // other config
 }

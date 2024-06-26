@@ -48,6 +48,8 @@ public class RvpProfile implements Serializable {
 
     private String email2;
 
+    private String Civilite;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -162,6 +164,14 @@ public class RvpProfile implements Serializable {
         this.email2 = email2;
     }
 
+    public String getCivilite() {
+        return Civilite;
+    }
+
+    public void setCivilite(String civilite) {
+        Civilite = civilite;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -205,6 +215,9 @@ public class RvpProfile implements Serializable {
             '\'' +
             ", email2='" +
             email2 +
+            '\'' +
+            ", Civilite='" +
+            Civilite +
             '\'' +
             '}'
         );

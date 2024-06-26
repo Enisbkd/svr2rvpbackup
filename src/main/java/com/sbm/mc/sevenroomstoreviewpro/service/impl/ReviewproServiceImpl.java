@@ -10,6 +10,7 @@ import com.sbm.mc.sevenroomstoreviewpro.service.ReviewproService;
 import com.sbm.mc.sevenroomstoreviewpro.service.SevenroomsTokenService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +52,10 @@ public class ReviewproServiceImpl implements ReviewproService {
         body.put("firstName", profile.getFirstName());
         body.put("lastName", profile.getLastName());
         body.put("language", profile.getLanguage());
-        body.put("checkin", profile.getCheckin().toString());
-        body.put("checkout", "");
+        body.put("checkin", Objects.toString(profile.getCheckin(), null));
+        body.put("checkout", Objects.toString(profile.getCheckout(), null));
         body.put("email", profile.getEmail());
+        //        body.put("Civilite",profile.getCivilite());
         requestBody.add(body);
 
         String requestBodyJson = null;
